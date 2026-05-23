@@ -31,7 +31,7 @@ def process_data():
     except FileNotFoundError:
         raise HTTPException(
             status_code=404, 
-            detail="Ֆայլը չի գտնվել: Համոզվեք, որ ֆայլը տեղադրված է 'data/Student_data.csv' ճանապարհով:"
+            detail="Dataset file not found. Please ensure 'Student_data.csv' exists in the 'data/' directory."
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
