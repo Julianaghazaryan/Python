@@ -17,7 +17,7 @@ def get_ui():
 def read_root():
     return {"message": "Ուսանողների վերլուծության համակարգը միացված է"}
 
-# ՆՈՐ՝ Ավելացրեցինք response_model, որպեսզի model.py-ն դառնա օգտագործվող
+
 @app.post("/process", response_model=PredictionResponse)
 def process_data():
     file_path = "data/Student_data.csv"
@@ -40,11 +40,11 @@ class PredictionInput(BaseModel):
 
 @app.post("/predict")
 def get_prediction(input_data: PredictionInput):
-    # Օգտագործում ենք քո ստացած իրական գործակիցները՝ ճշգրիտ ML կանխատեսման համար
+   
     slope = 0.0457
     intercept = 3.0659
     
-    # Գծային ռեգրեսիայի բանաձևը (y = m*x + b)՝ հիմնված քո իսկական մոդելի վրա
+ 
     prediction = (input_data.hours * slope) + intercept
     
     return {"prediction": round(float(prediction), 2)}
