@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Student Success Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 20px; background: #f4f6f9; color: #333; display: flex; justify-content: center; }
+        .dashboard { width: 100%; max-width: 900px; }
+        h1 { text-align: center; color: #1e293b; margin-bottom: 30px; font-weight: 600; font-size: 28px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); }
+        .full-width { grid-column: span 2; }
+        h3 { margin-top: 0; color: #475569; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; font-size: 18px; }
+        button { background: #3b82f6; color: white; padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-size: 15px; font-weight: 600; width: 100%; transition: background 0.2s; margin-top: 10px; }
+        button:hover { background: #2563eb; }
+        .btn-predict { background: #10b981; }
+        .btn-predict:hover { background: #059669; }
+        input[type="number"] { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; box-sizing: border-box; font-size: 16px; margin-top: 10px; }
+        .metrics { display: flex; justify-content: space-between; gap: 15px; margin-top: 15px; }
+        .metric-box { background: #f8fafc; padding: 15px; border-radius: 12px; text-align: center; flex: 1; border: 1px solid #e2e8f0; }
+        .metric-val { font-size: 22px; font-weight: 600; color: #3b82f6; margin-top: 5px; }
+        .metric-label { font-size: 12px; color: #64748b; text-transform: uppercase; }
+        pre { background: #0f172a; color: #38bdf8; padding: 15px; border-radius: 10px; overflow-x: auto; font-family: monospace; font-size: 13px; max-height: 180px; }
+        .chart-container { position: relative; height: 220px; width: 100%; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <h1>Student Success Analytics Dashboard 🚀</h1>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>1. Տվյալների Մշակում (Big Data)</h3>
+                <p style="color: #64748b; font-size: 14px;">Աշխատեցնել զուգահեռ հաշվարկներ (Multiprocessing Pool) 5000 ուսանողի բազայի վրա։</p>
+                <button onclick="analyzeData()">Գործարկել Պրոցեսները</button>
+                
+                <div class="metrics">
+                    <div class="metric-box">
+                        <div class="metric-label">Մշակված տողեր</div>
+                        <div id="m-rows" class="metric-val">-</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Միջին Ժամեր</div>
+                        <div id="m-hours" class="metric-val" style="color: #8b5cf6;">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>2. Իրական Ժամանակի ML Կանխատեսում</h3>
+                <p style="color: #64748b; font-size: 14px;">Մուտքագրեք օրական ուսման ժամերը՝ CGPA-ն կանխատեսելու համար։</p>
+                <input type="number" id="study_hours" placeholder="Օրինակ՝ 4.5" min="0" max="24" step="0.1">
+                <button onclick="predictData()" class="btn-predict">Կանխատեսել Գնահատականը</button>
+                
+                <div class="metrics" style="justify-content: center;">
+                    <div class="metric-box" style="max-width: 200px; background: #ecfdf5; border-color: #a7f3d0;">
+                        <div class="metric-label" style="color: #065f46;">Կանխատեսված CGPA</div>
+                        <div id="m-pred" class="metric-val" style="color: #10b981;">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card full-width">
+                <h3>3. Մոդելի Վիզուալիզացիա (Linear Regression)</h3>
+                <div class="chart-container">
+                    <canvas id="regressionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card full-width">
+                <h3>4. Սերվերի JSON Պատասխան (API Logs)</h3>
+                <pre id="output">Սպասում է հարցման...</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let myChart = null;
+
+        // Գրաֆիկի սկզբնական կառուցում դատարկ տվյալներով
+        function initChart(slope = 0, intercept = 0) {
+            const ctx = document.getElementById('regressionChart').getContext('2d');
+            
+            // Ստեղծում ենք գիծ՝ x=0-ից մինչև x=12 ժամ
+            const xValues = [0, 2, 4, 6, 8, 10, 12];
+            const yValues = xValues.map(x => (x * slope) + intercept);
+
+            if (myChart) { myChart.destroy(); }
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: xValues,
+                    datasets: [{
+                        label: 'Մոդելի Ռեգրեսիոն Գիծ (y = mx + b)',
+                        data: yValues,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Ուսման Ժամեր (Օրական)' } },
+                        y: { title: { display: true, text: 'CGPA' }, min: 0, max: 4 }
+                    }
+                }
+            });
+        }
+
+        // Առաջին անգամ բացվելիս նկարում ենք հիմնական գիծը
+        initChart(0.0457, 3.0659);
+
+        // Ֆունկցիա 1: Multiprocessing
+        async function analyzeData() {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerText = "Համակարգը զուգահեռ մշակում է 5000 տվյալները... Սպասեք...";
+            
+            try {
+                const response = await fetch('/process', { method: 'POST' });
+                const data = await response.json();
+                
+                outputDiv.innerText = JSON.stringify(data, null, 2);
+                
+                // Թարմացնում ենք սիրուն քարտերի թվերը
+                document.getElementById('m-rows').innerText = data.results.total_students_processed;
+                document.getElementById('m-hours').innerText = data.results.average_study_hours + " ժամ";
+                
+                // Թարմացնում ենք գրաֆիկը իրական ստացված գործակիցներով
+                initChart(data.results.ml_model_insights.coefficient_slope, data.results.ml_model_insights.intercept);
+                
+            } catch (error) {
+                outputDiv.innerText = "Սխալ՝ /process հարցման ժամանակ";
+            }
+        }
+
+        // Ֆունկցիա 2: Prediction
+        async function predictData() {
+            const outputDiv = document.getElementById('output');
+            const hoursValue = document.getElementById('study_hours').value;
+            
+            if (!hoursValue) {
+                alert("Խնդրում ենք մուտքագրել ժամերի թիվը:");
+                return;
+            }
+
+            outputDiv.innerText = "Կատարվում է ML կանխատեսում...";
+            try {
+                const response = await fetch('/predict', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ hours: parseFloat(hoursValue) })
+                });
+                const data = await response.json();
+                outputDiv.innerText = JSON.stringify(data, null, 2);
+                
+                // Ցույց ենք տալիս կանխատեսված թիվը կանաչ քարտում
+                document.getElementById('m-pred').innerText = data.prediction;
+
+                // Ավելացնում ենք կանխատեսված կետը գրաֆիկի վրա դինամիկ ձևով
+                if (myChart) {
+                    myChart.data.datasets.push({
+                        label: `Մուտքագրված կետ (${hoursValue}ժ)`,
+                        data: [{x: parseFloat(hoursValue), y: data.prediction}],
+                        backgroundColor: '#ef4444',
+                        borderColor: '#ef4444',
+                        pointRadius: 7,
+                        type: 'scatter'
+                    });
+                    myChart.update();
+                }
+            } catch (error) {
+                outputDiv.innerText = "Սխալ՝ /predict հարցման ժամանակ";
+            }
+        }
+    </script>
+</body>
+</html>
