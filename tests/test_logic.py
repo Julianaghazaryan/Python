@@ -20,7 +20,7 @@ def test_process_chunk_types(input_hours, input_cgpa):
     assert isinstance(result["total_cgpa"], float)
     assert isinstance(result["total_hours"], float)
 
-# Ուղղված թեստ, որը երբեք չի կախվի
+
 @patch("src.processor.Pool")
 @patch("src.processor.pd.read_csv")
 def test_run_pipeline_mocked(mock_read_csv, mock_pool):
@@ -32,7 +32,7 @@ def test_run_pipeline_mocked(mock_read_csv, mock_pool):
         "sum_xy": 42.5
     }]
     
-    # Ձևացնում ենք, թե Pool.map-ը հետ է տվել մեր կազմակերպած սումմաները
+    
     mock_pool.return_value.__enter__.return_value.map.return_value = fake_summary
     mock_read_csv.return_value = [pd.DataFrame()] # Կեղծ chunk iterator
     
