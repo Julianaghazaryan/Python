@@ -42,7 +42,7 @@ class PredictionInput(BaseModel):
 
 @app.post("/predict")
 def get_prediction(input_data: PredictionInput):
-    # ԴԻՆԱՄԻԿ ՍՏԱՑՈՒՄ. Կարդում է processor-ի հաշված վերջին գործակիցները
+   
     slope = LATEST_MODEL_COEFFICIENTS["slope"]
     intercept = LATEST_MODEL_COEFFICIENTS["intercept"]
     
