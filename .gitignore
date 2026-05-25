@@ -1,19 +1,19 @@
-# Python-ի ժամանակավոր ֆայլեր (Cache)
+
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .pytest_cache/
 
-# Վիրտուալ միջավայր
+
 venv/
 ENV/
 .env
 
-# Տվյալների ծանր ֆայլեր (որ GitHub չգնան)
+
 data/*.csv
 data/*.xlsx
 
-# Օպերացիոն համակարգի ֆայլեր
+
 .DS_Store
 Thumbs.db
