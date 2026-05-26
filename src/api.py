@@ -12,39 +12,55 @@ app = FastAPI(
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+
 @app.get("/ui")
 def get_ui():
     return FileResponse("static/index.html")
+
 
 @app.get("/")
 def read_root():
     return {"message": "Ուսանողների վերլուծության համակարգը միացված է"}
 
+
 @app.post("/process", response_model=PredictionResponse)
 def process_data():
     file_path = "data/Student_data.csv"
+
     try:
         analysis_results = run_pipeline(file_path)
+
         return {
             "status": "success",
             "results": analysis_results
         }
+
     except FileNotFoundError:
         raise HTTPException(
-            status_code=404, 
-            detail="Dataset file not found. Please ensure 'Student_data.csv' exists in the 'data/' directory."
+            status_code=404,
+            detail="Dataset file not found in data/ folder."
         )
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 class PredictionInput(BaseModel):
     hours: float
 
+
 @app.post("/predict")
 def get_prediction(input_data: PredictionInput):
-   
+    """
+    Prediction uses model trained in run_pipeline()
+    """
+
     slope = LATEST_MODEL_COEFFICIENTS["slope"]
     intercept = LATEST_MODEL_COEFFICIENTS["intercept"]
-    
+
     prediction = (input_data.hours * slope) + intercept
-    return {"prediction": round(float(prediction), 2)}
+
+    return {
+        "prediction": round(float(prediction), 2),
+        "note": "Model trained using run_pipeline()"
+    }
