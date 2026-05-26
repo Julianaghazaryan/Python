@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from typing import Dict, Any
+from typing import Dict
+
 
 class MLModelInsights(BaseModel):
     model_type: str
@@ -9,12 +10,14 @@ class MLModelInsights(BaseModel):
     intercept: float
     model_score_R2: float
 
+
 class PipelineResults(BaseModel):
     total_students_processed: int
     average_exam_score: float
     average_study_hours: float
     ml_model_insights: MLModelInsights
     analysis_meta: Dict[str, str]
+
 
 class PredictionResponse(BaseModel):
     status: str
