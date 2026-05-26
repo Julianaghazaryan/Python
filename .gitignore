@@ -1,19 +1,14 @@
-
 __pycache__/
 *.pyc
 *.pyo
-*.pyd
 .pytest_cache/
-
 
 venv/
 ENV/
 .env
 
-
 data/*.csv
 data/*.xlsx
-
 
 .DS_Store
 Thumbs.db
